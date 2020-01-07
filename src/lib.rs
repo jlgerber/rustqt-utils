@@ -44,6 +44,16 @@ where
     }
 }
 
+/// Given a stylesheet embedded in a &str, set it for the widget
+pub fn set_stylesheet_from_str<T>(sheet: &str, widget: MutPtr<T>)
+where
+    T: StaticUpcast<QWidget>,
+{
+    unsafe {
+        let stylesheet = qs(sheet);
+        T::static_upcast_mut(widget).set_style_sheet(stylesheet.as_ref());
+    }
+}
 /// Resize the window to some scale of the current screen.
 ///
 /// # Arguments
