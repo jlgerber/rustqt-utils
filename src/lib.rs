@@ -24,8 +24,8 @@ pub fn qs<S: AsRef<str>>(input: S) -> CppBox<QString> {
 /// * `widget` - A MutPtr wrpping a type which implements StaticUpcast<QWidget>
 ///
 /// # Returns
-/// * None
-pub fn load_stylesheet<T>(sheet: &str, widget: MutPtr<T>)
+/// * bool indicating success or failure
+pub fn load_stylesheet<T>(sheet: &str, widget: MutPtr<T>) -> bool
 where
     T: StaticUpcast<QWidget>,
 {
@@ -36,8 +36,10 @@ where
             text_stream.set_device(file.as_mut_ptr());
             let stylesheet = text_stream.read_all();
             T::static_upcast_mut(widget).set_style_sheet(stylesheet.as_ref());
+            true
         } else {
             log::warn!("stylesheet not found");
+            false
         }
     }
 }
