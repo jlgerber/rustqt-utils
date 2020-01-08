@@ -4,6 +4,7 @@ use qt_widgets::{
     cpp_core::{CppBox, MutPtr, Ref as QRef, StaticUpcast},
     QDesktopWidget, QHBoxLayout, QMainWindow, QVBoxLayout, QWidget,
 };
+pub mod stylesheet;
 
 /// Given an input of &str or String, return a boxed QString
 ///
