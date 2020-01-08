@@ -1,6 +1,6 @@
 use hsluv::{hex_to_rgb, rgb_to_hex};
 
-/// Enum repres
+/// Color represnetations in qss
 pub enum Color<'a> {
     Rgb { r: u8, g: u8, b: u8 },
     Rgba { r: u8, g: u8, b: u8, a: u8 },
@@ -346,6 +346,7 @@ impl<'a> ToString for Color<'a> {
     }
 }
 
+/// Size Units in qss
 pub enum Size {
     Px(u8),
     Em(u8),
@@ -359,19 +360,55 @@ impl ToString for Size {
         }
     }
 }
-
+/// Border styles, from css. Presumably, these are all valid in qss
 pub enum Border<'a> {
+    Dot { size: Size, color: Color<'a> },
+    Dash { size: Size, color: Color<'a> },
     Solid { size: Size, color: Color<'a> },
+    Double { size: Size, color: Color<'a> },
+    Groove { size: Size, color: Color<'a> },
+    Ridge { size: Size, color: Color<'a> },
+    Inset { size: Size, color: Color<'a> },
+    Outset { size: Size, color: Color<'a> },
+    Mix { size: Size, color: Color<'a> },
     None,
+    Hidden,
 }
 
 impl<'a> ToString for Border<'a> {
     fn to_string(&self) -> String {
         match self {
+            Self::Dot { size, color } => {
+                format!("{} dotted {}", size.to_string(), color.to_string())
+            }
+            Self::Dash { size, color } => {
+                format!("{} dashed {}", size.to_string(), color.to_string())
+            }
             Self::Solid { size, color } => {
                 format!("{} solid {}", size.to_string(), color.to_string())
             }
+            Self::Double { size, color } => {
+                format!("{} double {}", size.to_string(), color.to_string())
+            }
+            Self::Groove { size, color } => {
+                format!("{} groove {}", size.to_string(), color.to_string())
+            }
+            Self::Ridge { size, color } => {
+                format!("{} ridge {}", size.to_string(), color.to_string())
+            }
+            Self::Inset { size, color } => {
+                format!("{} inset {}", size.to_string(), color.to_string())
+            }
+            Self::Outset { size, color } => {
+                format!("{} outset {}", size.to_string(), color.to_string())
+            }
+            Self::Mix { size, color } => format!(
+                "{} dotted dahsed solid double {}",
+                size.to_string(),
+                color.to_string()
+            ),
             Self::None => "none".to_string(),
+            Self::Hidden => "hidden".to_string(),
         }
     }
 }
