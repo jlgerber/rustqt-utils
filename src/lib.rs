@@ -119,7 +119,19 @@ pub fn create_hlayout() -> CppBox<QHBoxLayout> {
 pub trait ToQString {
     fn to_qstring(&self) -> CppBox<QString>;
 }
+///
+pub trait ToQStringOwned {
+    fn to_qstring(self) -> CppBox<QString>;
+}
 
+impl<T> ToQStringOwned for T
+where
+    T: AsRef<str>,
+{
+    fn to_qstring(self) -> CppBox<QString> {
+        qs(self.as_ref())
+    }
+}
 /// Convert to Self from a QString reference
 pub trait FromQString {
     fn from_qstring(input: QRef<QString>) -> Self;
