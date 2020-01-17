@@ -136,3 +136,42 @@ where
 pub trait FromQString {
     fn from_qstring(input: QRef<QString>) -> Self;
 }
+
+#[macro_export]
+// makes it simpler to deal with the need to clone. Saw this here:
+// https://github.com/rust-webplatform/rust-todomvc/blob/master/src/main.rs#L142
+macro_rules! enclose {
+    ( ($(  $x:ident ),*) $y:expr ) => {
+        {
+            $(let $x = $x.clone();)*
+            $y
+        }
+    };
+}
+
+#[macro_export]
+macro_rules! enclose_mut {
+    ( ($( mut $x:ident ),*) $y:expr ) => {
+        {
+            $(let mut $x = $x.clone();)*
+            $y
+        }
+    };
+}
+
+/// clone both immutable and mutable vars. Useful for
+/// qt, which has a lot more mutable
+/// use like so:
+/// ```ignore
+/// Slot::,new(enclose_all!{ (foo, bar) (mut bla) move || {}}),
+/// ```
+#[macro_export]
+macro_rules! enclose_all {
+    ( ($(  $x:ident ),*) ($( mut $mx:ident ),*) $y:expr ) => {
+        {
+            $(let $x = $x.clone();)*
+            $(let mut $mx = $mx.clone();)*
+            $y
+        }
+    };
+}
