@@ -175,3 +175,24 @@ macro_rules! enclose_all {
         }
     };
 }
+
+#[macro_export]
+macro_rules! as_ref {
+    ( ($(  $x:ident ),*) $y:expr ) => {
+        {
+            $(let $x = $x.as_ref();)*
+            $y
+        }
+    };
+}
+
+#[macro_export]
+macro_rules! as_mut_ref {
+    ( ($(  $x:ident ),*) $y:expr ) => {
+        {
+            #[allow(unused_mut)]
+            $(let mut $x = $x.as_mut_ref();)*
+            $y
+        }
+    };
+}
