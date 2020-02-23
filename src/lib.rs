@@ -119,7 +119,7 @@ pub fn create_hlayout() -> CppBox<QHBoxLayout> {
 pub trait ToQString {
     fn to_qstring(&self) -> CppBox<QString>;
 }
-///
+/// produces an owned CppBoxed QString from self, consuming self in the process.
 pub trait ToQStringOwned {
     fn to_qstring(self) -> CppBox<QString>;
 }
@@ -129,6 +129,15 @@ where
     T: AsRef<str>,
 {
     fn to_qstring(self) -> CppBox<QString> {
+        qs(self.as_ref())
+    }
+}
+
+impl<T> ToQString for T
+where
+    T: AsRef<str>,
+{
+    fn to_qstring(&self) -> CppBox<QString> {
         qs(self.as_ref())
     }
 }
